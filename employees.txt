@@ -1,0 +1,5 @@
+Employee No: 100
+Employee Name: Sunny
+Employee Salary: 1000.0
+Employee Address: Mumbai
+Employee Married: True
