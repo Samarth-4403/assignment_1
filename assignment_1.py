@@ -8,15 +8,22 @@ class Employee:
         self.married = married
 
     def __str__(self):
-        return f"Employee No: {self.emp_no}\nEmployee Name: {self.name}\nEmployee Salary: {self.salary}\nEmployee Address: {self.address}\nEmployee Married: {self.married}"
+        return (
+            f"Employee No: {self.emp_no}\n"
+            f"Employee Name: {self.name}\n"
+            f"Employee Salary: {self.salary}\n"
+            f"Employee Address: {self.address}\n"
+            f"Employee Married: {self.married}"
+        )
 
 def get_employee_data():
 # function prompts user for data and returns a new object with the input data
-    emp_no = int(input("Enter Employee Number: "))
+    emp_no = str(input("Enter Employee Number: ")) #changed input from int to str
     name = input("Enter Employee Name: ")
     salary = float(input("Enter Employee Salary: "))
     address = input("Enter Employee Address: ")
-    married = input("Enter Employee Married (True/False): ") == "True"
+    #changed from str to boolean 
+    married = bool(input("Enter Employee Married (y/n): ").lower() in ("y", "yes"))
     return Employee(emp_no, name, salary, address, married)
 
 def add_another_employee():
@@ -29,11 +36,24 @@ def display_employees(employees):
     for employee in employees:
         print(employee)
 
-def save_employees_to_file(employees, filename):
-# function to save the list of employee data to a text file
-    with open(filename, "w") as f:
+def save_employees_to_csv(employees, filename):
+    # Function to save the list of employee data to a CSV file
+    with open(filename, "w", newline="") as csvfile:
+        import csv  
+
+        writer = csv.writer(csvfile)
+        writer.writerow(["Employee No", "Name", "Salary", "Address", "Married"])  # Header row
         for employee in employees:
-            f.write(str(employee) + "\n")
+            writer.writerow(
+                [
+                    employee.emp_no,
+                    employee.name,
+                    employee.salary,
+                    employee.address,
+                    employee.married,
+                ]
+            )
+
 
 if __name__ == "__main__":
     employees = []
@@ -52,7 +72,7 @@ if __name__ == "__main__":
         elif choice == '2':
             print("\nExiting Employee Management System...\n")
             if employees:  # Save data only if there are employees
-                save_employees_to_file(employees, "employees.txt")
+                save_employees_to_csv(employees, "employees.csv")
             break
         else:
             print("\nInvalid choice. Please enter 1 or 2.")
